@@ -49,7 +49,7 @@ namespace marching_cubes::core::jobs {
 			return *this;
 		}
 
-		JobManager& flush() noexcept;
+		JobManager& flush(bool sync = false) noexcept;
 
 	private:
 		// non-owned

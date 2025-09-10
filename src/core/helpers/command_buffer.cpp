@@ -2,7 +2,10 @@
 
 #include <vulkan/vulkan_core.h>
 
+#include <limits>
 #include <stdexcept>
+
+#include <core/aliases.hpp>
 
 namespace marching_cubes::core::helpers {
 
@@ -64,8 +67,8 @@ namespace marching_cubes::core::helpers {
 
         vkQueueSubmit(submitQueue, 1, &submitInfo, *waitFence);
 
-        if (waitFence != VK_NULL_HANDLE) {
-            vkWaitForFences(device, 1, waitFence, VK_TRUE, UINT64_MAX);
+        if (*waitFence != VK_NULL_HANDLE) {
+            vkWaitForFences(device, 1, waitFence, VK_TRUE, std::numeric_limits<u64>::max());
         }
         else {
             vkQueueWaitIdle(submitQueue);

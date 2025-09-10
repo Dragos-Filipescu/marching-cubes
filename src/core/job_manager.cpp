@@ -58,14 +58,17 @@ namespace marching_cubes::core::jobs {
         return m_Jobs;
     }
 
-    JobManager& JobManager::flush() noexcept
+    JobManager& JobManager::flush(bool sync) noexcept
     {
         if (m_Jobs.empty()) {
             return *this;
 		}
-        const VkFence fence = m_TransferFence;
-        vkWaitForFences(m_Device, 1, &fence, VK_TRUE, std::numeric_limits<u64>::max());
-        vkResetFences(m_Device, 1, &fence);
+        VkFence fence = VK_NULL_HANDLE;
+        if (sync) {
+            fence = m_TransferFence;
+            vkWaitForFences(m_Device, 1, &fence, VK_TRUE, std::numeric_limits<u64>::max());
+            vkResetFences(m_Device, 1, &fence);
+        }
 
         const auto commandBuffer = helpers::beginSingleTimeCommands(m_Device, m_CommandPool);
 
