@@ -1,5 +1,5 @@
 ﻿cmake_minimum_required(VERSION 3.31)
-project(marching-cubes LANGUAGES C CXX)
+project(marching-cubes LANGUAGES CXX)
 
 # ==============================================================================
 # CMake Policies

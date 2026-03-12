@@ -309,12 +309,22 @@ namespace marching_cubes {
         VK_KHR_SWAPCHAIN_EXTENSION_NAME
     };
 
-    constexpr glm::vec3 c_Vec3Up{ 0.0f, 1.0f, 0.0f };
-    constexpr glm::vec3 c_Vec3Down{ 0.0f, -1.0f, 0.0f };
-    constexpr glm::vec3 c_Vec3Left{ -1.0f, 0.0f, 0.0f };
-    constexpr glm::vec3 c_Vec3Right{ 1.0f, 0.0f, 0.0f };
-    constexpr glm::vec3 c_Vec3Forward{ 0.0f, 0.0f, -1.0f };
-    constexpr glm::vec3 c_Vec3Backward{ 0.0f, 0.0f, 1.0f };
+    constexpr glm::vec3 kVec3Up{ 0.0f, 1.0f, 0.0f };
+    constexpr glm::vec3 kVec3Down{ 0.0f, -1.0f, 0.0f };
+    constexpr glm::vec3 kVec3Left{ -1.0f, 0.0f, 0.0f };
+    constexpr glm::vec3 kVec3Right{ 1.0f, 0.0f, 0.0f };
+    constexpr glm::vec3 kVec3Forward{ 0.0f, 0.0f, -1.0f };
+    constexpr glm::vec3 kVec3Backward{ 0.0f, 0.0f, 1.0f };
+
+    template<std::size_t Alignment>
+        requires (Alignment > 0)
+    constexpr std::size_t alignUp(std::size_t size) noexcept {
+        if constexpr ((Alignment & (Alignment - 1)) == 0) {
+            // fast path for power-of-two alignments
+            return ((size + (Alignment - 1)) & ~(Alignment - 1));
+        }
+        return ((size + Alignment - 1) / Alignment) * Alignment;
+    }
 
     struct ImageData final {
         VkExtent3D extent{};

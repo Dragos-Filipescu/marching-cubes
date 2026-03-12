@@ -15,10 +15,10 @@
 namespace marching_cubes::camera {
 
     using collisions::AABB;
+    using utils::alignment::AlignedStructMember140;
 
     struct alignas(
-        utils::GLSLStructAlignmentV<
-            utils::GLSLLayout::Std140,
+        utils::alignment::GLSLStructAlignment140V<
             glm::vec3,
             glm::vec3,
             glm::vec3,
@@ -26,10 +26,10 @@ namespace marching_cubes::camera {
         >
     )
     CameraUBO {
-        glm::vec3 position;
-        glm::vec3 forward;
-        glm::vec3 right;
-        glm::vec3 up;
+        AlignedStructMember140<glm::vec3> position;
+        AlignedStructMember140<glm::vec3> forward;
+        AlignedStructMember140<glm::vec3> right;
+        AlignedStructMember140<glm::vec3> up;
     };
 
     class Camera {
@@ -63,7 +63,7 @@ namespace marching_cubes::camera {
         Camera& translateRight(f32 distance) noexcept;
         Camera& lookAt(
             const glm::vec3& target,
-            const glm::vec3& up = c_Vec3Up
+            const glm::vec3& up = kVec3Up
         ) noexcept;
         Camera& processMouseDelta(glm::vec2 delta) noexcept;
 
@@ -90,6 +90,7 @@ namespace marching_cubes::camera {
         scene::Transform    m_Transform;
         f32                 m_Yaw;
         f32                 m_Pitch;
+		f32				    m_Roll;
         f32                 m_SensitivityX;
         f32                 m_SensitivityY;
         f32                 m_FovRadians;

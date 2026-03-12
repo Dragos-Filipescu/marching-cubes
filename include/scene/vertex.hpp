@@ -75,9 +75,9 @@ namespace marching_cubes::scene {
 			 * The Vulkan API doesn't actually care about the alignment as long as the offsets match,
 			 * but we'll use utils::GLSLLayout::Std430, as it matches the expected alignment behaviour.
 			 */
-			constexpr std::size_t align = utils::GLSLStructMemberAlignmentV<utils::GLSLLayout::Std430, T>;
+			constexpr std::size_t align = utils::alignment::GLSLStructMemberAlignment430V<T>;
 
-			cursor = utils::alignUp<align>(cursor);
+			cursor = alignUp<align>(cursor);
 			offs[I] = cursor;
 			cursor += sizeof(T);
 		}
@@ -102,13 +102,13 @@ namespace marching_cubes::scene {
 
 		static constexpr auto kInfo = layoutInfo();
 
-		static constexpr auto Packing = Packing;
+		static constexpr auto kPacking = Packing;
 		using Attributes = std::tuple<Attrs...>;
 
 		static constexpr auto kSize = (
 			Packing == VertexPacking::Standard
-			? utils::alignUp<16>(kInfo.second)
-			: utils::alignUp<4>(kInfo.second)
+			? alignUp<16>(kInfo.second)
+			: alignUp<4>(kInfo.second)
 		);
 		static constexpr auto kOffsets = kInfo.first;
 
@@ -154,8 +154,7 @@ namespace marching_cubes::scene {
 			u32 binding = 0
 		)
 		{
-			static constexpr const auto arr = getCommonAttrs();
-			auto result = arr;
+			auto result = getCommonAttrs();
 			for (VkVertexInputAttributeDescription& attr : result) {
 				attr.binding = binding;
 			}
@@ -216,7 +215,7 @@ namespace marching_cubes::scene {
 
 		constexpr bool operator==(const BasicVertex<Packing, Attrs...>& other) const noexcept
 		{
-			return ((get<Attrs>() == other.get<Attrs>()) && ...);
+			return ((get<Attrs>() == other.template get<Attrs>()) && ...);
 		}
 	};
 
@@ -248,6 +247,14 @@ namespace marching_cubes::scene {
 	using Normal	= VertexAttribute<1, glm::vec3, VK_FORMAT_R32G32B32_SFLOAT>;
 	using Texcoord	= VertexAttribute<2, glm::vec2, VK_FORMAT_R32G32_SFLOAT>;
 	using Color		= VertexAttribute<3, glm::vec3, VK_FORMAT_R32G32B32_SFLOAT>;
+
+	using MyVertex = BasicVertex<
+		VertexPacking::Standard,
+		Position,
+		Normal,
+		Texcoord,
+		Color
+	>;
 
 } // namespace marching_cubes
 

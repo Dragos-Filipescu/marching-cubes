@@ -38,21 +38,29 @@ namespace marching_cubes::camera
 
     CameraThirdPerson& CameraThirdPerson::rotateOX(f32 angle)
     {
-        m_Transform.rotate(getRight(), angle);
+        // pitch = rotation around camera's local right axis
+        m_Pitch += angle;
+
+        // clamp pitch to avoid upside-down orbits
+        static constexpr f32 pitchLimit = glm::radians(89.0f);
+        m_Pitch = glm::clamp(m_Pitch, -pitchLimit, pitchLimit);
+
         updatePosition();
         return *this;
     }
 
     CameraThirdPerson& CameraThirdPerson::rotateOY(f32 angle)
     {
-        m_Transform.rotate(c_Vec3Up, angle);
+        // yaw = rotation around world up
+        m_Yaw += angle;
         updatePosition();
         return *this;
     }
 
     CameraThirdPerson& CameraThirdPerson::rotateOZ(f32 angle)
     {
-        m_Transform.rotate(getForward(), angle);
+        // Rarely used but consistent
+        m_Roll += angle; // if you want roll support
         updatePosition();
         return *this;
     }
@@ -66,6 +74,19 @@ namespace marching_cubes::camera
 
     void CameraThirdPerson::updatePosition()
     {
-        m_Transform.setPosition(m_PivotPoint - getForward() * m_DistanceToPivot);
+        // build orbit orientation from yaw + pitch
+        glm::quat qYaw = glm::angleAxis(m_Yaw, kVec3Up);
+        glm::quat qPitch = glm::angleAxis(m_Pitch, kVec3Right);
+
+        glm::quat orbitRotation = qYaw * qPitch;
+
+        // offset camera from pivot
+        glm::vec3 offset = orbitRotation * glm::vec3(0, 0, m_DistanceToPivot);
+
+        // place camera in world
+        m_Transform.setPosition(m_PivotPoint + offset);
+
+        // aim camera at pivot point
+        m_Transform.lookAt(m_PivotPoint);
     }
 }

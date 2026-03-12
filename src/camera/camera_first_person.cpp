@@ -22,7 +22,7 @@ namespace marching_cubes::camera
 
     CameraFirstPerson& CameraFirstPerson::rotateOY(f32 angle)
     {
-        m_Transform.rotate(c_Vec3Up, angle);
+        m_Transform.rotate(kVec3Up, angle);
         return *this;
     }
 

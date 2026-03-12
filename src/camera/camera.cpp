@@ -92,8 +92,8 @@ namespace marching_cubes::camera {
         m_Pitch = glm::clamp(m_Pitch, -pitchLimit, pitchLimit);
 
         // Recompute rotation
-        glm::quat qYaw = glm::angleAxis(m_Yaw, c_Vec3Up);
-        glm::quat qPitch = glm::angleAxis(m_Pitch, c_Vec3Right);
+        glm::quat qYaw = glm::angleAxis(m_Yaw, kVec3Up);
+        glm::quat qPitch = glm::angleAxis(m_Pitch, kVec3Right);
         glm::quat rotation = qYaw* qPitch;
 
         m_Transform.setRotation(rotation);
@@ -133,17 +133,17 @@ namespace marching_cubes::camera {
 
     glm::vec3 Camera::getForward() const noexcept
     {
-        return m_Transform.getRotation() * c_Vec3Forward;
+        return m_Transform.getRotation() * kVec3Forward;
     }
 
     glm::vec3 Camera::getRight() const noexcept
     {
-        return m_Transform.getRotation() * c_Vec3Right;
+        return m_Transform.getRotation() * kVec3Right;
     }
 
     glm::vec3 Camera::getUp() const noexcept
     {
-        return m_Transform.getRotation() * c_Vec3Up;
+        return m_Transform.getRotation() * kVec3Up;
     }
 
     f32 Camera::getYaw() const noexcept

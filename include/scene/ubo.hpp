@@ -8,17 +8,20 @@
 
 namespace marching_cubes::scene {
 
+	using utils::alignment::GLSLLayout;
+	using utils::alignment::GLSLStructAlignment140V;
+	using utils::alignment::AlignedStructMember140;
+
 	struct alignas(
-		utils::GLSLStructAlignmentV<
-			utils::GLSLLayout::Std140,
+		GLSLStructAlignment140V<
 			glm::mat4,
 			glm::mat4,
 			glm::mat4
 		>
 	) ModelViewProjectionUBO {
-		glm::mat4 model{ 1.0f };
-		glm::mat4 view{ 1.0f };
-		glm::mat4 projection{ 1.0f };
+		AlignedStructMember140<glm::mat4> model{ 1.0f };
+		AlignedStructMember140<glm::mat4> view{ 1.0f };
+		AlignedStructMember140<glm::mat4> projection{ 1.0f };
 	};
 }
 

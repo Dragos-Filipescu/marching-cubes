@@ -96,6 +96,9 @@ namespace marching_cubes::managers {
 
 		static constexpr i64 kAllocatorShellLayers = 2;
 
+		template<std::size_t TriangleCount>
+		static constexpr std::size_t kTriangleVertices = TriangleCount * 3ULL;
+
 	public:
 
 		using VertexType = VertexT;
@@ -396,7 +399,7 @@ namespace marching_cubes::managers {
 			ChunkResolution chunkResolution
 		) noexcept
 		{
-			return 15ULL * chunkResolution * chunkResolution * chunkResolution;
+			return kTriangleVertices<5> *chunkResolution* chunkResolution* chunkResolution;
 		}
 
 

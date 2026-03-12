@@ -2073,7 +2073,7 @@ private:
             .model = m_Model = glm::rotate(
                 m_Model,
                 m_DeltaTime.count() * glm::radians(0.0f),
-                c_Vec3Up
+                kVec3Up
             ),
 			.view = m_Camera.getViewMatrix(),
 			.projection = m_Camera.getProjectionMatrix(),
