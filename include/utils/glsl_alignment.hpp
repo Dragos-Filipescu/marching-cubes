@@ -85,7 +85,7 @@ namespace marching_cubes::utils::alignment {
 		};
 	}
 
-	enum class GLSLLayout : std::uint8_t {
+	enum class GLSLLayout : u8 {
 		Std140 = 0,
 		Std430
 	};
@@ -172,9 +172,8 @@ namespace marching_cubes::utils::alignment {
 
 		template<GLSLLayout L, typename T>
 		struct GLSLElementAlignment {
-			// Ugly, messy trick to force the compiler to defer instantiation
 			static_assert(
-				AlwaysFalseV<T>,
+				false,
 				"GLSLElementAlignment: unsupported GLSLVariable type"
 			);
 		};
@@ -191,7 +190,7 @@ namespace marching_cubes::utils::alignment {
 		template<GLSLLayout L, GLSLVector V>
 		struct GLSLElementAlignment<L, V> : std::integral_constant<
 			std::size_t,
-			detail::VecTraits<V>::Dim * sizeof(detail::VecTraits<V>::ElemType)
+			detail::VecTraits<V>::Dim * sizeof(typename detail::VecTraits<V>::ElemType)
 		> {};
 
 		//	vec3 specialization because it gets aligned to 4 * sizeof(element_type) under both layouts
@@ -249,9 +248,11 @@ namespace marching_cubes::utils::alignment {
 		template<GLSLLayout L, GLSLArray Arr>
 		struct GLSLArrayElementAlignment<L, Arr> : std::integral_constant<
 			std::size_t,
-			(L == GLSLLayout::Std140)
-			? alignUp<16>(GLSLArrayElementAlignment<L, RemoveAllExtentsT<Arr>>::value)
-			: GLSLArrayElementAlignment<L, RemoveAllExtentsT<Arr>>::value
+			(
+				(L == GLSLLayout::Std140)
+				? alignUp<16>(GLSLArrayElementAlignment<L, RemoveAllExtentsT<Arr>>::value)
+				: GLSLArrayElementAlignment<L, RemoveAllExtentsT<Arr>>::value
+			)
 		> {};
 
 		template<GLSLLayout L, GLSLArray Arr>
@@ -285,9 +286,8 @@ namespace marching_cubes::utils::alignment {
 
 		template<GLSLLayout L>
 		struct GLSLStructAlignment<L> {
-			// Uglier, messier trick to force the compiler to defer instantiation
 			static_assert(
-				AlwaysFalseV<L>,
+				false,
 				"GLSLStructAlignment: parameter pack cannot be empty"
 			);
 		};

@@ -2387,8 +2387,8 @@ namespace marching_cubes::utils::marching_cubes {
             // You can populate normals/texcoords later if needed
             auto normal = gradientAt(v);
             VertexT vert{};
-            vert.get<scene::Position>() = v;
-            vert.get<scene::Normal>() = normal;
+            vert.template get<scene::Position>() = v;
+            vert.template get<scene::Normal>() = normal;
             result.vertices.push_back(vert);
         }
 

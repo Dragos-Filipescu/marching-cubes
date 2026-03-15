@@ -245,7 +245,7 @@ namespace marching_cubes::utils::bit_enum {
     template<BitEnum E, std::unsigned_integral ...BitIdxs>
     [[nodiscard]] constexpr E setBits(E e, BitIdxs... bitIdxs) noexcept
     {
-        return E{ bit_utils::setBits(toUnderlying(e), bitIdxs) };
+        return E{ bit_utils::setBits(toUnderlying(e), bitIdxs...) };
     }
 
     template<BitEnum E>

@@ -26,6 +26,7 @@ namespace marching_cubes::utils::enum_utils {
         else {
             os << static_cast<std::uintmax_t>(toUnderlying(e));
         }
+        return os;
     };
 }
 

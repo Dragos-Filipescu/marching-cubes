@@ -1,5 +1,7 @@
 #include <core/physical_device.hpp>
 
+#include <stdexcept>
+
 namespace marching_cubes::core {
 
     PhysicalDevice::PhysicalDevice(VkPhysicalDevice physicalDevice)

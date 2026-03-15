@@ -127,7 +127,7 @@ namespace marching_cubes {
             && lhs.initialLayout == rhs.initialLayout;
     }
 
-    template<std::size_t N, typename T, glm::qualifier Q>
+    template<glm::length_t N, typename T, glm::qualifier Q>
     glm::vec<N, T, Q> vec_nextafter(
         const glm::vec<N, T, Q>& x,
         const glm::vec<N, T, Q>& y
@@ -154,7 +154,7 @@ namespace marching_cubes {
         typename R,
         std::floating_point T,
         std::floating_point U,
-        std::size_t N,
+        glm::length_t N,
         glm::qualifier Q = glm::packed_highp
     >
     [[nodiscard]] glm::vec<N, R, Q> floor_div(
@@ -179,7 +179,7 @@ namespace marching_cubes {
         typename R,
         std::floating_point T,
         std::floating_point U,
-        std::size_t N,
+        glm::length_t N,
         glm::qualifier Q = glm::packed_highp
     >
     [[nodiscard]] glm::vec<N, R, Q> ceil_div(
@@ -220,7 +220,7 @@ namespace marching_cubes {
         typename R,
         std::floating_point T,
         std::floating_point U,
-        std::size_t N,
+        glm::length_t N,
         glm::qualifier Q = glm::packed_highp
     >
     [[nodiscard]] glm::vec<N, R, Q> bumped_floor_div(
@@ -242,7 +242,7 @@ namespace marching_cubes {
         typename R,
         std::floating_point T,
         std::floating_point U,
-        std::size_t N,
+        glm::length_t N,
         glm::qualifier Q = glm::packed_highp
     >
     [[nodiscard]] glm::vec<N, R, Q> bumped_ceil_div(

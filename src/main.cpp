@@ -1114,7 +1114,7 @@ private:
         initWindow();
         initCamera();
         initVulkanCore();
-        initTexture();
+        // initTexture();
         initColorDepthTargets();
         initFramebuffers();
         initDescriptors();

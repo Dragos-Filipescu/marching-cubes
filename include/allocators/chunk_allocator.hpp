@@ -69,19 +69,13 @@ namespace marching_cubes::allocators {
 
 		BasicChunkAllocator() noexcept = default;
 
-		template<
-			typename VertexAllocatorBufferT,
-			typename IndexAllocatorBufferT,
-			typename VertexIndexerT,
-			typename IndexIndexerT
-		>
 		BasicChunkAllocator(
 			u64 verticesPerChunk,
 			VertexAllocatorBufferT&& vertexBuffer,
-			VertexIndexerT&& vertexBufferIndexer,
+			IndexerT&& vertexBufferIndexer,
 			u64 indicesPerChunk,
 			IndexAllocatorBufferT&& indexBuffer,
-			IndexIndexerT&& indexBufferIndexer
+			IndexerT&& indexBufferIndexer
 		) noexcept
 			: m_VertexAllocator{
 				verticesPerChunk,

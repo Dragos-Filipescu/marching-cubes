@@ -19,9 +19,13 @@
 
 #include <core/aliases.hpp>
 #include <utils/glsl_alignment.hpp>
+#include <utils/tmp.hpp>
 #include <utils/utils.hpp>
 
 namespace marching_cubes::scene {
+
+	using marching_cubes::utils::tmp::indexOf;
+	using marching_cubes::utils::tmp::isOneOf;
 
 	template<
 		u32 Location,
@@ -33,9 +37,9 @@ namespace marching_cubes::scene {
 			&& std::is_trivially_copyable_v<T>
 		)
 	struct VertexAttribute final {
-		static constexpr u32 Location = Location;
+		static constexpr u32 kLocation = Location;
 		using Type = T;
-		static constexpr VkFormat Format = Format;
+		static constexpr VkFormat kFormat = Format;
 	};
 
 	namespace detail {
@@ -43,7 +47,7 @@ namespace marching_cubes::scene {
 		struct IsVertexAttribute : std::false_type {};
 
 		template<
-			u32 L,
+			auto L,
 			typename T,
 			VkFormat F
 		>
@@ -169,45 +173,30 @@ namespace marching_cubes::scene {
 					sizeof...(Attrs)
 				>{
 					VkVertexInputAttributeDescription{
-						.location = Attrs::Location,
+						.location = Attrs::kLocation,
 						.binding = 0,
-						.format = Attrs::Format,
+						.format = Attrs::kFormat,
 						.offset = static_cast<u32>(kOffsets[I])
 					}...
 				};
 			}(std::index_sequence_for<Attrs...>{});
 		}
 
-		template<typename Attr, std::size_t I = 0>
-		static consteval std::size_t indexOf()
-		{
-			if constexpr (I >= sizeof...(Attrs)) {
-				static_assert(false, "Attribute not found in VertexType");
-				return 0;
-			}
-			else if constexpr (std::same_as<Attr, std::tuple_element_t<I, Attributes>>) {
-				return I;
-			}
-			else {
-				return indexOf<Attr, I + 1>();
-			}
-		}
-
 		template<typename Attr>
-			requires (std::same_as<Attr, Attrs> || ...)
+			requires (isOneOf<Attr, Attrs...>)
 		constexpr auto& get() noexcept
 		{
-			constexpr std::size_t I = indexOf<Attr>();
+			constexpr std::size_t I = indexOf<Attr, Attrs...>();
 			using T = typename Attr::Type;
 			auto ptr = reinterpret_cast<T*>(data.data() + kOffsets[I]);
 			return *std::launder(ptr);
 		}
 
 		template<typename Attr>
-			requires (std::same_as<Attr, Attrs> || ...)
+			requires (isOneOf<Attr, Attrs...>)
 		constexpr const auto& get() const noexcept
 		{
-			constexpr std::size_t I = indexOf<Attr>();
+			constexpr std::size_t I = indexOf<Attr, Attrs...>();
 			using T = typename Attr::Type;
 			auto ptr = reinterpret_cast<const T*>(data.data() + kOffsets[I]);
 			return *std::launder(ptr);

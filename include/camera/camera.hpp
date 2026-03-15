@@ -14,6 +14,13 @@
 
 namespace marching_cubes::camera {
 
+    using scene::BasicTransform;
+    using scene::Translation;
+    using scene::Rotation;
+    using scene::Scale;
+
+    using Transform = BasicTransform<Translation, Rotation, Scale>;
+
     using collisions::AABB;
     using utils::alignment::AlignedStructMember140;
 
@@ -69,8 +76,8 @@ namespace marching_cubes::camera {
 
         [[nodiscard]] glm::mat4 getViewMatrix() const noexcept;
         [[nodiscard]] glm::mat4 getProjectionMatrix() const noexcept;
-        [[nodiscard]] const scene::Transform& getTransform() const noexcept;
-        [[nodiscard]] scene::Transform& getTransform() noexcept;
+        [[nodiscard]] const Transform& getTransform() const noexcept;
+        [[nodiscard]] Transform& getTransform() noexcept;
         [[nodiscard]] glm::vec3 getPosition() const noexcept;
         [[nodiscard]] glm::vec3 getForward() const noexcept;
         [[nodiscard]] glm::vec3 getRight() const noexcept;
@@ -87,16 +94,16 @@ namespace marching_cubes::camera {
         [[nodiscard]] AABB getFrustumAABB() const noexcept;
 
     protected:
-        scene::Transform    m_Transform;
-        f32                 m_Yaw;
-        f32                 m_Pitch;
-		f32				    m_Roll;
-        f32                 m_SensitivityX;
-        f32                 m_SensitivityY;
-        f32                 m_FovRadians;
-        f32                 m_AspectRatio;
-        f32                 m_Near;
-        f32                 m_Far;
+        Transform   m_Transform;
+        f32         m_Yaw;
+        f32         m_Pitch;
+		f32         m_Roll;
+        f32         m_SensitivityX;
+        f32         m_SensitivityY;
+        f32         m_FovRadians;
+        f32         m_AspectRatio;
+        f32         m_Near;
+        f32         m_Far;
     };
 
     [[nodiscard]] CameraUBO ToUBO(const Camera& camera) noexcept;

@@ -18,8 +18,6 @@ namespace marching_cubes::controllers {
 
     class InputListener;
 
-    class window::Window;
-
     class InputController final {
 
         friend class window::Window;

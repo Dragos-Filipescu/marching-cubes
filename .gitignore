@@ -361,3 +361,37 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+
+# CMake build directories
+build/
+install/
+
+# CMake generated files
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+compile_commands.json
+
+# Compiled shaders
+*.spv
+
+# VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# Linux
+*.o
+*.a
+*.so
+
+# GCC/Clang
+*.d
+
+# Core dumps
+core
+
+# Clangd
+.cache/

@@ -116,12 +116,12 @@ namespace marching_cubes::camera {
         return proj;
     }
 
-    const scene::Transform& Camera::getTransform() const noexcept
+    const Transform& Camera::getTransform() const noexcept
     {
         return m_Transform;
     }
 
-    scene::Transform& Camera::getTransform() noexcept
+    Transform& Camera::getTransform() noexcept
     {
         return m_Transform;
     }
